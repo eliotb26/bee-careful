@@ -1,9 +1,10 @@
-from flask import Flask
+from flask import Flask, render_template
 app = Flask(__name__)
 
 @app.route("/")
-def hello():
-	return "Hello Kori!"
+@app.route("/home")
+def home():
+	return render_template('homescreen.html')
 	
 @app.route("/news")
 def news():
@@ -16,3 +17,7 @@ def submission():
 @app.route("/contactUs")
 def contact():
 	return "Karan Erry"
+
+
+if __name__ == '__main__':
+	app.run(debug=True)
