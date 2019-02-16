@@ -44,57 +44,38 @@ tr > * { /*headers & table elements*/
       <button class="btn btn-success"><a href="/" id="login">Home</a></button>
     </ul>
   </nav>
+ 
+
   <div class="container">
     <h3>
       <span><center>Submit</center></span>
-      <a href="/export">
-        <button class="btn btn-warning pull-right">Export</button>
-      </a>
     </h3>
   </div>
-  <div class="container" vertical-align="middle">
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">Course</th>
-          <th scope="col">Section</th>
-          <th scope="col">Room Assignment</th>
-          <th scope="col">Period</th>
-          <th scope="col">Days</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for course in courseDict %}
-          {% for courseDetails in courseDict[course] %}
-            <tr>
-            {% if loop.index == 1 %}
-              <td rowspan="{{courseDict[course]|length}}" valign="middle" halign="middle">{{course}}</td>
-            {% endif %}
-            <td>{{courseDetails['section']}}</td>
-            <td>{{courseDetails['room']}}</td>
-            <td>{{courseDetails['startTime']}}-{{courseDetails['endTime']}}</td>
-            <!-- {% set daysStr = "" %}
-            {% for day in courseDetails['days'] %}
-              {% if day == 1 %}
-                {{ daysStr|join("M") }}
-              {% elif day == 2 %}
-                {{ daysStr|join("T") }}
-              {% elif day == 3 %}
-                {{ daysStr|join("W") }}
-              {% elif day == 4 %}
-                {{ daysStr|join("R") }}
-              {% elif day == 5 %}
-                {{ daysStr|join("F") }}
-              {% endif %}
-            {% endfor %}
-            <td>{{daysStr}}</td> -->
-            <td>{{courseDetails['days']}}</td>
-            </tr>
-          {% endfor %}
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+  <div class="container">
+  <form action="action_page.php">
+
+    <label for="username">Username</label>
+    <input type="text" id="username" name="name" placeholder="Your username.."><br></br>
+
+    <label for="website">Website</label>
+    <input type="text" id="website" name="webname" placeholder="The website url.."><br></br>
+
+    <label for="datafields">DataFields</label>
+    <input type="text" id="datafields" name="datatypes" placeholder="The datafield.."><br></br>
+
+    <label for="Subject">Subject</label>
+    <textarea id="subject" name="subject" placeholder="Reason.." style="height:50px"></textarea><br></br>
+
+    <label for="comments">Comments</label>
+    <input type="text" id="comment" name="comments" placeholder="Extra comments.." style="height:200px"></textarea><br></br>
+
+    <input type="submit" value="Submit">
+
+  </form>
+</div>
+
+
+  
   </div>
 </body>
 </html>
