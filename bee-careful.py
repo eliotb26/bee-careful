@@ -19,7 +19,7 @@ def submit():
 			return update_site_data(request.form['site'], request.form['fields'], request.form['uses'])
 	return render_template('submit.html', inputError = True)
 	
-@app.route("/contact-us")
+@app.route("/contact")
 def contact():
 	return "Karan"
 
