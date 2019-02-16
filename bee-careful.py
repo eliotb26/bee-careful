@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request
 from xml.dom import minidom
 import xml.etree.ElementTree as ET
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static', static_url_path='/static')
+#app.static_folder = "/static"
 
 @app.route("/")
 @app.route("/home")
@@ -10,7 +11,7 @@ def home():
 	
 @app.route("/news")
 def news():
-	return "news"
+	return render_template('news.html')
 	
 @app.route("/submit", methods=['GET', 'POST'])
 def submit():
@@ -21,7 +22,11 @@ def submit():
 	
 @app.route("/contact-us")
 def contact():
-	return "Karan Erry"
+	return "Karan"
+
+@app.route("/profile")
+def profile():
+	return "Test"
 	
 ##############################
 # 	  INTERNAL FUNCTIONS	 #
