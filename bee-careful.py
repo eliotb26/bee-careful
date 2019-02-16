@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 from xml.dom import minidom
 import xml.etree.ElementTree as ET
-app = Flask(__name__, static_folder='static', static_url_path='/static')
+app = Flask(__name__, static_folder='static')
 #app.static_folder = "/static"
 
 @app.route("/")
