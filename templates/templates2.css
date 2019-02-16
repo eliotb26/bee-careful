@@ -1,12 +1,12 @@
 *{
-  margin: 10;
+  margin: 0;
   padding: 0;
   font-family: "Century Gothic", sans-serif;
 
 }
 
 header{
-  background-image: url(cityscape.jpeg);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.4)), url(cityscape.jpeg);
   /*Cityscape of New York City*/
   height: 100vh;
   background-size: cover;
@@ -56,7 +56,6 @@ ul a:hover{
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  transition: 0.6 ease;
 }
 
 .title h1{
@@ -65,15 +64,22 @@ ul a:hover{
 
 }
 
-.linkToExt{
-  position: absolute;
-  top: 60%;
-  left: 50%;
-  transform: translate(-40,-50);
-  transition: 1.01 ease;
+.button {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, 25%);
+
+}
+.chromeBtn{
+  border: 1px solid #fff;
+  padding: 10px 30px;
+  color: #fff;
+  text-decoration: none;
+  transition: 0.6s ease;
 }
 
-.linkToExt h2{
-  color: #fff;
-  font-size: 40px
+.chromeBtn: hover{
+  background-color: #fff;
+  color: #000;
 }
