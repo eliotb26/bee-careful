@@ -1,7 +1,7 @@
 *{
-  margin: 0;
+  margin: 10;
   padding: 0;
-  font-family: Century Gothic;
+  font-family: "Century Gothic", sans-serif;
 
 }
 
@@ -21,7 +21,7 @@ ul{
   margin-top: 25 px;
 
 }
-ul li{
+ul a{
   display: inline-block;
   /*This creates an inline block*/
 
@@ -32,9 +32,48 @@ ul a{
   color: #fff; /*#fff simply means white*/
   padding: 5px 20px;
   border: 1px solid #fff;
+  transition: 0.6s ease;
 }
 
-ul a: hover{
+ul a:hover{
   background-color: #fff;
   color: #000;
+}
+
+.logo img{
+  float: left;
+  width: 150px
+  height: auto
+
+}
+
+.main{
+  max-width: 1200px;
+}
+
+.title{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: 0.6 ease;
+}
+
+.title h1{
+  color: #fff;
+  font-size: 120px;
+
+}
+
+.linkToExt{
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-40,-50);
+  transition: 1.01 ease;
+}
+
+.linkToExt h2{
+  color: #fff;
+  font-size: 40px
 }
