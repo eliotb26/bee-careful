@@ -9,7 +9,7 @@ def home():
 	
 @app.route("/news")
 def news():
-	return "news"
+	return render_template('news.html')
 	
 @app.route("/Submit")
 def submission():
