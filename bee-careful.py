@@ -18,6 +18,9 @@ def submission():
 def contact():
 	return "Karan Erry"
 
+@app.route("/profile")
+def profile():
+	return "Test"
 
 if __name__ == '__main__':
 	app.run(debug=True)
