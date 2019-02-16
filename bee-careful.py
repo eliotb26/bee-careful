@@ -1,4 +1,6 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+from xml.dom import minidom
+import xml.etree.ElementTree as ET
 app = Flask(__name__)
 
 @app.route("/")
@@ -10,14 +12,32 @@ def home():
 def news():
 	return "news"
 	
-@app.route("/Submit")
-def submission():
-	return "submit"
+@app.route("/submit", methods=['GET', 'POST'])
+def submit():
+	if request.method == 'POST' and all(elem in request.form for elem in ['user', 'site', 'fields', 'uses']):
+		if validate_user(request.form['user']):
+			return update_site_data(request.form['site'], request.form['fields'], request.form['uses'])
+	return render_template('submit.html', inputError = True)
 	
-@app.route("/contactUs")
+@app.route("/contact-us")
 def contact():
 	return "Karan Erry"
+	
+##############################
+# 	  INTERNAL FUNCTIONS	 #
+##############################
 
+def update_site_data(address, fields, uses):
+	# parse fields and uses
+	# then store in db for address
+	# catches exception which returns submit with error=True
+	# otherwise returns void
+	pass
+
+def validate_user(username):
+	# check db and validate
+	# returns boolean
+	pass
 
 if __name__ == '__main__':
 	app.run(debug=True)
