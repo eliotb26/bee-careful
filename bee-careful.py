@@ -17,7 +17,7 @@ def submission():
 	
 @app.route("/contactUs")
 def contact():
-	return "Karan Erry"
+	return "Karan"
 
 @app.route("/profile")
 def profile():
