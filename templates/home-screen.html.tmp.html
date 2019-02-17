@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
   <title>Contribute Information</title>
@@ -55,39 +56,17 @@ tr > * { /*headers & table elements*/
     <a href="{{ url_for('contact') }}">Contact Us</a>
   </h4>
 </nav>
- 
-  <div class="container">
-    <h3>
-      <span><center>Contribute Information about Websites' Data Use</center></span>
-    </h3>
-  </div>
-  <div class="container">
-    <h3 style="color:#C11B17">
-      <span><center>{{ errMsg }}</center></span>
-    </h3>
-  </div>
-  <br>
-  <div class="container">
-  <form method=POST enctype=multipart/form-data action="{{ url_for('submit') }}">
+    <div class = "title">
+      <h1><center>BeeCareful helps you Be Carefree</center></h1>
+    </div>
+    <br>
+    <h3><center>Welcome to the crowdsourced website that tells you what different companies do with your data!<!--, the fine print of the legal contract you never read before accepting, and all the latest buzz about GDPR, etc.--></center></h3>
 
-    <label for="username">Username</label>
-    <input type="text" id="username" name="user" placeholder="Your username.."><br></br>
+    <!--
+    <div class="button">
+      <a href="#" class="chromeBtn">CHROME EXTENSION </a>
+    </div>-->
 
-    <label for="website">Website</label>
-    <input type="text" id="website" name="site" placeholder="The website url.."><br></br>
-
-    <label for="datafields">Field and Usages</label>
-    <input type="text" id="datafields" name="fieldusages" placeholder="The datafield.."><br></br>
-    
-    <h5> Format for entering Field and Usages: &lt;field&gt;
-
-    <input type="submit" value="Submit">
-
-  </form>
-</div>
-
-
-
-  </div>
+  </header>
 </body>
 </html>
