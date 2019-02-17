@@ -48,7 +48,7 @@ tr > * { /*headers & table elements*/
       &nbsp;|&nbsp;
       <a href="{{ url_for('news') }}">Search</a>
       &nbsp;|&nbsp;
-      <a href="{{ url_for('profile') }}">User</a>
+      <a href="{{ url_for('addContributor') }}">Register</a>
       &nbsp;|&nbsp;
       <a href="{{ url_for('submit') }}">Submit</a>
       &nbsp;|&nbsp;
@@ -62,24 +62,35 @@ tr > * { /*headers & table elements*/
     </h3>
   </div>
   <div class="container">
+    <h3 style="color:#C11B17">
+      <span><center>{{ errMsg }}</center></span>
+    </h3>
+  </div>
+  <br>
+  <div class="container">
     <h3 style="color:#3EA055">
       <span><center>{{ successMsg }}</center></span>
     </h3>
   </div>
   <br>
   <div class="container">
-  <form method=POST enctype=multipart/form-data action="{{ url_for('add_contributor') }}">
+  <form method=POST enctype=multipart/form-data action="{{ url_for('addContributor') }}">
 
     <label for="email">Email</label>
     <input type="text" id="email" name="email" placeholder="Your email.."><br></br>
     <input type="submit" value="Submit">
+
+<!--     <label for="email">Email</label> -->
+<!--     <input type="text" id="email" name=email placeholder="Your email.."><br></br> -->
+<!--     <input type="submit" value="Submit"> -->
+    
+  </form>
 
     
     <h3>Why share my email?</h3>
     <h5>We pride ourselves on educating people about the data that brands they use store about them, and that means that extends to us too. However, in the interest of maintaining integrity for our contributions, we need a way of tracking contributions to (anonymous) avatars. Your email address helps us know that you are unique. </h5>
     
     </h4><u>Do we actually store the email address?</u></h4> <h5>No! We hash it using a SHA-2 hash, and store only the hashed value (the digest). We never store raw email addresses, and only ever exist temporarily on RAM on our server while they're being hashed. The SHA-2 hash is strong enough to reduce collisions to nearly insignificantly low, so the chance that two email addresses collide is really, really, really low. </h5>
-  </form>
 </div>
 
 

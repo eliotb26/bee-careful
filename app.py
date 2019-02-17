@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from xml.dom import minidom
+from hashlib import new
 import xml.etree.ElementTree as ET
 app = Flask(__name__, static_folder='static')
 
@@ -10,18 +11,18 @@ def home():
 	
 @app.route("/news")
 def news():
-	return render_template('news.html')
+	return render_template('news.html', posts=None)
 	
 @app.route("/submit", methods=['GET', 'POST'])
 def submit():
 	# TODO remove debug statements
 #	print('--- A ---')
-#	initializeDataObjects()
+	initializeDataObjects()
 #	print('--- AA ---')
 #	if request.method == 'POST':
 #		print('--- B ---')
-	errMsg = ''
-	if request.method == 'POST' and all(elem in request.form for elem in ['user', 'site', 'fieldusages']):
+	errMsg, successMsg = '',  ''
+	if request.method == 'POST' and all(request.form[elem] for elem in ['user', 'site', 'fieldusages']):
 		print('--- 0 ---')
 		if validate_user(request.form['user']):
 			status = add_site_data(request.form['site'], request.form['fieldusages'])
@@ -30,39 +31,45 @@ def submit():
 				tree.write('database.xml')
 				tree.write('database_backup.xml')
 				print(minidom.parse('database.xml').toprettyxml())
-				return redirect(url_for('home'))
+				successMsg = 'Your contributions were submitted successfully! Thank you <3'
 			else:	errMsg = 'problems parsing data. did you follow all the instructions closely?'
-		else:	errMsg = 'your user does not seem to exist. click "add user" to add yourself!'
+		else:	errMsg = 'your user does not seem to exist. click "Register" above to add yourself!'
 	elif request.method == 'POST':
 		errMsg = 'did you enter values for each field?'
-	return render_template('submit.html', errMsg = errMsg)
+	return render_template('submit.html', errMsg = errMsg, successMsg = successMsg)
 	
 @app.route("/contact-us")
 def contact():
-	return render_template('Context_us.html')
-
-@app.route("/profile")
-def profile():
-	return "Test"
+	return render_template('contact_us.html')
+#
+# @app.route("/profile")
+# def profile():
+# 	return render_template('')
 	
-@app.route("/add-contributor")
+@app.route("/add-contributor", methods=['GET', 'POST'])
+def addContributor():
+	initializeDataObjects()
+	errMsg, successMsg = '',  ''
+	if request.method == 'POST' and request.form['email']:
+		email = request.form['email']
+		print('--- 0 ---')
+		if not validate_user(email):
+			status = addUser(email)
+			if status == 'GREEN':
+				tree = ET.ElementTree(root)
+				tree.write('database.xml')
+				tree.write('database_backup.xml')
+				print(minidom.parse('database.xml').toprettyxml())
+				successMsg = 'You are registered successfully! Please use your email when contributing. ((Again, it will only be used to check against the stored hash value))'
+			else:	errMsg = 'facing some unknown problems with hashing or adding the user to the xml tree'
+		else:	errMsg = 'this user seems to already exist! please use this email address when contributing'
+	elif request.method == 'POST':
+		errMsg = 'please enter your email'
+	return render_template('add-contributor.html', errMsg = errMsg, successMsg = successMsg)
 	
 ##############################
 # 	  INTERNAL FUNCTIONS	 #
 ##############################
-
-def update_site_data(site, fields, uses):
-	# parse fields and uses
-	# then store in db for address
-	# catches exception which returns submit with error=True
-	# otherwise returns void
-	pass
-
-def validate_user(username):
-	# check db and validate
-	# returns boolean
-	# TODO: VALIDATE THE USER FOR REAL !!!
-	return True
 		
 ##############################
 # 	  	  DATA  BASE	 	 #
@@ -96,6 +103,19 @@ def initializeDataObjects():
 # 	newUsage = ET.SubElement(elem_usages, 'usage')
 # 	newUsage.text = usageToAdd
 # 	return True
+
+def validate_user(email):
+	emailhash = hash_email(email)
+	for user in elem_users.findall('user'):
+		if user.text == emailhash:
+			return True
+	# Program flow reached here so no user found
+	return False
+
+def hash_email(email):
+	hasher = new('sha512')
+	hasher.update(email.encode('utf-8'))
+	return hasher.hexdigest()
 
 def getFieldForSite(fieldName, site):	# done, untested
 	# site = elem_sites.find('site', {'addr':siteAddr})
@@ -174,9 +194,14 @@ def add_site_data(addr, field_usage):
 	except Exception as e:
 		return False
 	
-def addUser(username):
-	newUser = ET.SubElement(elem_users, 'user')
-	newUser.text = username
+def addUser(email):
+	try:
+		emailhash = hash_email(email)
+		newUser = ET.SubElement(elem_users, 'user')
+		newUser.text = emailhash
+		return 'GREEN'
+	except Exception as e:
+		return False
 
 def getSite(addr):	 # done, untested
 	for site in elem_sites.findall('site'):

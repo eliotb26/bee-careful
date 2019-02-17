@@ -48,7 +48,7 @@ tr > * { /*headers & table elements*/
     &nbsp;|&nbsp;
     <a href="{{ url_for('news') }}">Search</a>
     &nbsp;|&nbsp;
-    <a href="{{ url_for('profile') }}">User</a>
+    <a href="{{ url_for('addContributor') }}">Register</a>
     &nbsp;|&nbsp;
     <a href="{{ url_for('submit') }}">Submit</a>
     &nbsp;|&nbsp;
@@ -68,6 +68,12 @@ tr > * { /*headers & table elements*/
   </div>
   <br>
   <div class="container">
+    <h3 style="color:#3EA055">
+      <span><center>{{ successMsg }}</center></span>
+    </h3>
+  </div>
+  <br>
+  <div class="container">
   <form method=POST enctype=multipart/form-data action="{{ url_for('submit') }}">
 
     <label for="username">Username</label>
@@ -79,8 +85,9 @@ tr > * { /*headers & table elements*/
     <label for="datafields">Field and Usages</label>
     <input type="text" id="datafields" name="fieldusages" placeholder="The datafield.."><br></br>
     
-    <h5> Format for entering Field and Usages: &lt;field&gt;
-
+    <h3>Format for entering Field and Usages</h3><br>
+    <h4>For each field, there can be multiple usages. So for each field and n number of usages, you submit it like this:<br><b>&lt;field&gt; : &lt;usage1&gt; , &lt;usage2&gt; , &lt;usage3&gt; (and so on)</b><br><br>You can submit any number of these field-usages 'pairings' at once, with each 'pairing' separated by semicolons, like so:<br><b>&lt;field1&gt; : &lt;usage1&gt; , &lt;usage2&gt; , &lt;usage3&gt; <u>;</u> &lt;field2&gt; : &lt;usage3&gt; , &lt;usage&gt; , &lt;usage4&gt; (and so on)</b></h3>
+    
     <input type="submit" value="Submit">
 
   </form>
