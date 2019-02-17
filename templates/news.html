@@ -7,10 +7,10 @@
   </head>
   <body>
     {{ for post in posts }}
-        <h1> {{news.title}}</h1>
+        <h1> {{post.title}}</h1>
     <!--flask allows us to write code in templates - use code {% %}block to write code. -->
-        <p>By {{news.author}} on {{ news.date_posted}}</p>
-        <p>{{ news.content }}</p>
+        <p>By {{post.author}} on {{ post.date_posted}}</p>
+        <p>{{ post.content }}</p>
     {{ endfor }}
   </body>
 </html>
