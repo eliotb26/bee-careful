@@ -4,13 +4,84 @@
     <meta charset="utf-8">
     <title>News</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/templates2.css') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   </head>
+  <style>
+  #login{
+    text-decoration:none;
+    color:white;
+    /*padding-left: 10px;*/
+  }
+  #nav{
+    padding-right: 50px;
+  }
+  #allRight{
+    padding-top: 10px;
+  }
+  #h3{
+    color: black;
+  }
+  #dropdown{
+    padding-right: 20px;
+  }
+  td{
+      vertical-align: middle;
+  }
+  p{
+    width: 80%;
+  }
+
+  tr > * { /*headers & table elements*/
+    text-align: center;
+  }
+</style>
   <body>
-    {{ for post in posts }}
-        <h1> {{post.title}}</h1>
-    <!--flask allows us to write code in templates - use code {% %}block to write code. -->
-        <p>By {{post.author}} on {{ post.date_posted}}</p>
-        <p>{{ post.content }}</p>
-    {{ endfor }}
+  <nav class="navbar navbar-inverse bg-inverse" id="nav">
+    <a class="navbar-brand" href="/">
+      <img src="bee.png" width="30" height="30" alt="">
+    </a>
+    <a class="navbar-brand" id="header" href="/">
+      BeeCareful
+    </a>
+    <h4>
+      <a href="{{ url_for('home') }}">HOME</a>
+      &nbsp;|&nbsp;
+      <a href="{{ url_for('news') }}">Search</a>
+      &nbsp;|&nbsp;
+      <a href="{{ url_for('addContributor') }}">Register</a>
+      &nbsp;|&nbsp;
+      <a href="{{ url_for('submit') }}">Submit</a>
+      &nbsp;|&nbsp;
+      <a href="{{ url_for('contact') }}">Contact Us</a>
+    </h4>
+  </nav>
+    <div class="container" vertical-align="middle">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Website</th>
+            <th scope="col">Field</th>
+            <th scope="col">Usage</th>
+            <th scope="col">Count</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for siteAddr in sitesInfo %}
+            {% for fieldName in sitesInfo[siteAddr] %}
+              {% for usageName in sitesInfo[siteAddr][fieldName] %}
+                <tr>
+                <td>{{siteAddr}}</td>
+                <td>{{fieldName}}</td>
+                <td>{{usageName}}</td>
+                <td>{{sitesInfo[siteAddr][fieldName][usageName]}}</td>
+                </tr>
+              {% endfor %}
+            {% endfor %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </body>
 </html>

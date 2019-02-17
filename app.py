@@ -11,7 +11,19 @@ def home():
 	
 @app.route("/news")
 def news():
-	return render_template('news.html', posts=None)
+	initializeDataObjects()
+	sitesInfo = {}
+	for site in elem_sites.findall('site'):
+		siteAddr = site.attrib['addr']
+		sitesInfo[siteAddr] = {}
+		for field in site.findall('field'):
+			fieldName = field.attrib['name']
+			sitesInfo[siteAddr][fieldName] = {}
+			for usage in field.findall('usage'):
+				usageName = usage.text
+				sitesInfo[siteAddr][fieldName][usageName] = usage.attrib['count']
+	print(sitesInfo)
+	return render_template('news.html', sitesInfo = sitesInfo)
 	
 @app.route("/submit", methods=['GET', 'POST'])
 def submit():
