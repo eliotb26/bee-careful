@@ -6,11 +6,11 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/templates2.css') }}">
   </head>
   <body>
-    {% for post in posts %}
+    {{ for post in posts }}
         <h1> {{news.title}}</h1>
     <!--flask allows us to write code in templates - use code {% %}block to write code. -->
         <p>By {{news.author}} on {{ news.date_posted}}</p>
         <p>{{ news.content }}</p>
-    {% endfor %}
+    {{ endfor }}
   </body>
 </html>

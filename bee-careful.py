@@ -25,7 +25,7 @@ def submit():
 	else: errMsg = 'did you enter values for each field?'
 	return redirect(url_for('submit', inputError = True, errMsg = errMsg))
 	
-@app.route("/contact-us")
+@app.route("/contact")
 def contact():
 	return "Karan"
 

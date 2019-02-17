@@ -12,11 +12,11 @@
 
       </div>
       <ul>
-        <a href="#">Home</a>
-        <a href="#">News</a>
-        <a href="#">User</a>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('news') }}">News</a>
+        <a href="{{ url_for('profile') }}">User</a>
         <a href="{{ url_for('submit') }}">Submit</a>
-        <a href="#">Contact Us</a>
+        <a href="{{ url_for('contact') }}">Contact Us</a>
       </ul>
     </div>
     <div class = "title">
