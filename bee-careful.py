@@ -49,7 +49,7 @@ def validate_user(username):
 	pass
 		
 ##############################
-# 	  		 XML			 #
+# 	  	  DATA  BASE	 	 #
 ##############################
 
 def initializeDataObjects():
@@ -60,16 +60,38 @@ def initializeDataObjects():
 	except FileNotFoundError:
 		print('database.xml file could not be found. Creating new file in current dir.')
 		root = ET.Element('data')
-		elem_sites, elem_fields, elem_users = ET.SubElement(root, 'sites'), ET.SubElement(root, 'fields'), ET.SubElement(root, 'users')
+		elem_sites, elem_fields, elem_usages, elem_users = ET.SubElement(root, 'sites'), ET.SubElement(root, 'fields'), ET.SubElement(root, 'usages'), ET.SubElement(root, 'users')
 #		ET.SubElement(elem_trips, 'count').text = '0'
 		
-def add_site_data(site, fields, uses):
-	
+def add_site_data(addr, fields, uses):
+	fields = [value.strip() for value in fields.split(';')]
+	uses = [value.strip() for value in uses.split(';')]
+	# check site exists
+	site = getSite(addr)
+	if site:
+		
+	for 
+	# validate input contains no xml-banned characters?
 	# parse fields and uses
 	# then store in db for address
 	# catches exception which returns submit with error=True
 	# otherwise returns void
 	pass
+	
+def addUser(username):
+	newUser = ET.SubElement(elem_users, 'user')
+	newUser.text = username
+	
+def add_site(addr):
+	
+	
+
+def getSite(addr):
+	for site in elem_sites.findall('site'):
+		if site.attrib['addr'] == addr:
+			return site
+	# Program flow reached here so no site found
+	return False
 
 
 if __name__ == '__main__':
