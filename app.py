@@ -14,18 +14,17 @@ def news():
 	
 @app.route("/submit", methods=['GET', 'POST'])
 def submit():
-	print('--- A ---')
-	initializeDataObjects()
-	print('--- AA ---')
-	if request.method == 'POST':
-		print('--- B ---')
+	# TODO remove debug statements
+#	print('--- A ---')
+#	initializeDataObjects()
+#	print('--- AA ---')
+#	if request.method == 'POST':
+#		print('--- B ---')
+	errMsg = ''
 	if request.method == 'POST' and all(elem in request.form for elem in ['user', 'site', 'fieldusages']):
 		print('--- 0 ---')
 		if validate_user(request.form['user']):
-			# TODO TODO TODO TODO TODO TODO TODO
-			print('--- 1 --- :', request.form['site'], request.form['fieldusages'])
 			status = add_site_data(request.form['site'], request.form['fieldusages'])
-			print('--- 2 ---')
 			if status == 'GREEN':
 				tree = ET.ElementTree(root)
 				tree.write('database.xml')
@@ -34,8 +33,9 @@ def submit():
 				return redirect(url_for('home'))
 			else:	errMsg = 'problems parsing data. did you follow all the instructions closely?'
 		else:	errMsg = 'your user does not seem to exist. click "add user" to add yourself!'
-	else: errMsg = 'did you enter values for each field?'
-	return render_template('submit.html', inputError = True, errMsg = errMsg)
+	elif request.method == 'POST':
+		errMsg = 'did you enter values for each field?'
+	return render_template('submit.html', errMsg = errMsg)
 	
 @app.route("/contact-us")
 def contact():
@@ -44,6 +44,8 @@ def contact():
 @app.route("/profile")
 def profile():
 	return "Test"
+	
+@app.route("/add-contributor")
 	
 ##############################
 # 	  INTERNAL FUNCTIONS	 #
