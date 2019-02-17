@@ -42,6 +42,22 @@ def validate_user(username):
 	# check db and validate
 	# returns boolean
 	pass
+		
+##############################
+# 	  		 XML			 #
+##############################
+
+def initializeDataObjects():
+	global root, elem_sites, elem_fields, elem_users
+	try:
+		root = ET.parse('database.xml').getroot()
+		elem_sites, elem_fields, elem_users = root.find('sites'), root.find('fields'), root.find('users')
+	except FileNotFoundError:
+		print('database.xml file could not be found. Creating new file in current dir.')
+		root = ET.Element('data')
+		elem_sites, elem_fields, elem_users = ET.SubElement(root, 'sites'), ET.SubElement(root, 'fields'), ET.SubElement(root, 'users')
+		ET.SubElement(elem_trips, 'count').text = '0'
+
 
 if __name__ == '__main__':
 	app.run(debug=True)
