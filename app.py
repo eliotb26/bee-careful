@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from xml.dom import minidom
 from hashlib import new
 import xml.etree.ElementTree as ET
+app = Flask(__name__)
 
 @app.route("/")
 @app.route("/home")
