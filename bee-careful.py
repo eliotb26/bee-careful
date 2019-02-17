@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from xml.dom import minidom
 import xml.etree.ElementTree as ET
 app = Flask(__name__, static_folder='static')
@@ -52,8 +52,10 @@ def validate_user(username):
 # 	  	  DATA  BASE	 	 #
 ##############################
 
+global root, elem_sites, elem_fields, elem_usages, elem_users
+
 def initializeDataObjects():
-	global root, elem_sites, elem_fields, elem_users
+	global root, elem_sites, elem_fields, elem_usages, elem_users
 	try:
 		root = ET.parse('database.xml').getroot()
 		elem_sites, elem_fields, elem_users = root.find('sites'), root.find('fields'), root.find('users')
@@ -62,16 +64,70 @@ def initializeDataObjects():
 		root = ET.Element('data')
 		elem_sites, elem_fields, elem_usages, elem_users = ET.SubElement(root, 'sites'), ET.SubElement(root, 'fields'), ET.SubElement(root, 'usages'), ET.SubElement(root, 'users')
 #		ET.SubElement(elem_trips, 'count').text = '0'
-		
-def add_site_data(addr, fields, uses):
-	fields = [value.strip() for value in fields.split(';')]
-	uses = [value.strip() for value in uses.split(';')]
-	# check site exists
+
+def addField(fieldToAdd): # done, untested
+	for field in elem_fields.findall('field'):
+		if field.text == fieldToAdd:
+			return True
+	newField = ET.SubElement(elem_fields, 'field')
+	newField.text = fieldToAdd
+	return True
+
+
+def addUsage(usageToAdd): # done, untested
+	for usage in elem_usages.findall('usage'):
+		if usage.text == usageToAdd:
+			return True
+	newUsage = ET.SubElement(elem_usages, 'usage')
+	newUsage.text = usageToAdd
+	return True
+
+def getFieldForSite(fieldName, siteAddr):
+	site = elem_sites.find()
+
+
+def getField(fieldName):	# done, untested
+	for field in elem_fields.findall('field'):
+		if field.text == fieldName:
+			return field
+	# Program flow reached here so no field found
+	# Create field
+	newField = ET.SubElement(elem_fields, 'field')
+	newField.text = fieldName
+	return newField
+
+def getUsage(usageName):	# done, untested
+	for usage in elem_usages.findall('usage'):
+		if usage.text == usageName:
+			return usage
+	# Program flow reached here so no usage found
+	# Create usage
+	newUsage = ET.SubElement(elem_usages, 'usage')
+	newUsage.text = usageName
+	return newUsage
+
+
+def add_site_data(addr, field_usage):
+	field_usage_pairs = [value.strip() for value in field_usage.split(';')]
+	# get site
 	site = getSite(addr)
-	if site:
-		
-	for 
-	# validate input contains no xml-banned characters?
+	for pair in field_usage_pairs:
+		fieldName, usages = [value.strip() for value in pair.split(':')]
+		usages = [value.strip() for value in usages.split(',')]
+		# get field
+		field = getField(fieldName)
+
+		ET.SubElement(site, 'field')
+	fields = [value.strip() for value in fields.split(';')]
+	usages = [value.strip() for value in usages.split(';')]
+	# next, we add all the fields and usages
+	for field in fields:
+		addField(field)
+	for usage in usages:
+		addUsage(usage)
+	# next we add the fields and usages to the site
+
+	# TODO: validate input contains no xml-banned characters?
 	# parse fields and uses
 	# then store in db for address
 	# catches exception which returns submit with error=True
@@ -81,17 +137,15 @@ def add_site_data(addr, fields, uses):
 def addUser(username):
 	newUser = ET.SubElement(elem_users, 'user')
 	newUser.text = username
-	
-def add_site(addr):
-	
-	
 
-def getSite(addr):
+def getSite(addr):	 # done, untested
 	for site in elem_sites.findall('site'):
 		if site.attrib['addr'] == addr:
 			return site
 	# Program flow reached here so no site found
-	return False
+	# Create site
+	newSite = ET.SubElement(elem_sites, 'site', {'addr':addr})
+	return newSite
 
 
 if __name__ == '__main__':
