@@ -9,9 +9,31 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
   <body>
-    <div class="contact-title">
-      <h1>Say Hello! </h1>
 
+    <nav class="navbar navbar-inverse bg-inverse" id="nav">
+      <a class="navbar-brand" href="/">
+        <img src="bee.png" width="30" height="30" alt="">
+      </a>
+      <a class="navbar-brand" id="header" href="/">
+        BeeCareful
+      </a>
+      <h4>
+        <a href="{{ url_for('home') }}">HOME</a>
+        &nbsp;|&nbsp;
+        <a href="{{ url_for('news') }}">Search</a>
+        &nbsp;|&nbsp;
+        <a href="{{ url_for('addContributor') }}">Register</a>
+        &nbsp;|&nbsp;
+        <a href="{{ url_for('submit') }}">Submit</a>
+        &nbsp;|&nbsp;
+        <a href="{{ url_for('contact') }}">Contact Us</a>
+      </h4>
+    </nav>
+
+    <div class="container">
+      <h1>
+        <span><center>Say Hello!</center></span>
+      </h1>
     </div>
 
     <div class="container">
@@ -21,9 +43,11 @@
         <input type="text" id="email" name="email" placeholder="Your Email"><br></br>
         <textarea name="message" class="form-control" placeholder="Message" rows="4"></textarea><br>
         <input type="submit" value="Submit">
+
       </form>
 
-      <h3>We are here to provide the best service to you!</h3>
+      <center><h3>We are here to provide the best service to you!</h3>
+      <span><center><img src="bee.png" alt=""></center></span>
 
     </div>
 
