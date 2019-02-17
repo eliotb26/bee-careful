@@ -6,7 +6,7 @@ app = Flask(__name__, static_folder='static')
 @app.route("/")
 @app.route("/home")
 def home():
-	return render_template('home-screen.html')
+	return render_template('templates2.html')
 	
 @app.route("/news")
 def news():
@@ -14,25 +14,16 @@ def news():
 	
 @app.route("/submit", methods=['GET', 'POST'])
 def submit():
-	print('--- A ---')
-	if request.method == 'POST':
-		print('--- B ---')
-	if request.method == 'POST' and all(elem in request.form for elem in ['user', 'site', 'fieldusages']):
-		print('--- 0 ---')
+	if request.method == 'POST' and all(elem in request.form for elem in ['user', 'site', 'fields', 'uses']):
 		if validate_user(request.form['user']):
-			# TODO TODO TODO TODO TODO TODO TODO
-			print('--- 1 --- :', request.form['site'], request.form['fieldusages'])
-			status = add_site_data(request.form['site'], request.form['fieldusages'])
+			status = add_site_data(request.form['site'], request.form['fields'])
 			if status == 'GREEN':
-				tree = ET.ElementTree(root)
-				tree.write('database.xml')
-				tree.write('database_backup.xml')
 				print(minidom.parse('database.xml').toprettyxml())
 				return redirect(url_for('home'))
 			else:	errMsg = 'problems parsing data. did you follow all the instructions closely?'
 		else:	errMsg = 'your user does not seem to exist. click "add user" to add yourself!'
 	else: errMsg = 'did you enter values for each field?'
-	return render_template('submit.html', inputError = True, errMsg = errMsg)
+	return redirect(url_for('submit', inputError = True, errMsg = errMsg))
 	
 @app.route("/contact-us")
 def contact():
@@ -56,8 +47,7 @@ def update_site_data(site, fields, uses):
 def validate_user(username):
 	# check db and validate
 	# returns boolean
-	# TODO: VALIDATE THE USER FOR REAL !!!
-	return True
+	#
 		
 ##############################
 # 	  	  DATA  BASE	 	 #
