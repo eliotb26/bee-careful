@@ -16,8 +16,13 @@ def news():
 def submit():
 	if request.method == 'POST' and all(elem in request.form for elem in ['user', 'site', 'fields', 'uses']):
 		if validate_user(request.form['user']):
-			return update_site_data(request.form['site'], request.form['fields'], request.form['uses'])
-	return render_template('submit.html', inputError = True)
+			status = update_site_data(request.form['site'], request.form['fields'], request.form['uses'])
+			if status:
+				return redirect(url_for('home'))
+			else:	errMsg = 'problems parsing data. did you follow all the instructions closely?'
+		else:	errMsg = 'your user does not seem to exist. click "add user" to add yourself!'
+	else: errMsg = 'did you enter values for each field?'
+	return redirect(url_for('submit', inputError = True, errMsg = errMsg))
 	
 @app.route("/contact-us")
 def contact():
@@ -31,7 +36,7 @@ def profile():
 # 	  INTERNAL FUNCTIONS	 #
 ##############################
 
-def update_site_data(address, fields, uses):
+def update_site_data(site, fields, uses):
 	# parse fields and uses
 	# then store in db for address
 	# catches exception which returns submit with error=True
@@ -56,7 +61,15 @@ def initializeDataObjects():
 		print('database.xml file could not be found. Creating new file in current dir.')
 		root = ET.Element('data')
 		elem_sites, elem_fields, elem_users = ET.SubElement(root, 'sites'), ET.SubElement(root, 'fields'), ET.SubElement(root, 'users')
-		ET.SubElement(elem_trips, 'count').text = '0'
+#		ET.SubElement(elem_trips, 'count').text = '0'
+		
+def add_site_data(site, fields, uses):
+	
+	# parse fields and uses
+	# then store in db for address
+	# catches exception which returns submit with error=True
+	# otherwise returns void
+	pass
 
 
 if __name__ == '__main__':
