@@ -6,7 +6,7 @@ app = Flask(__name__, static_folder='static')
 @app.route("/")
 @app.route("/home")
 def home():
-	return render_template('templates2.html')
+	return render_template('home-screen.html')
 	
 @app.route("/news")
 def news():
@@ -14,18 +14,30 @@ def news():
 	
 @app.route("/submit", methods=['GET', 'POST'])
 def submit():
-	if request.method == 'POST' and all(elem in request.form for elem in ['user', 'site', 'fields', 'uses']):
+	print('--- A ---')
+	initializeDataObjects()
+	print('--- AA ---')
+	if request.method == 'POST':
+		print('--- B ---')
+	if request.method == 'POST' and all(elem in request.form for elem in ['user', 'site', 'fieldusages']):
+		print('--- 0 ---')
 		if validate_user(request.form['user']):
-			status = add_site_data(request.form['site'], request.form['fields'])
+			# TODO TODO TODO TODO TODO TODO TODO
+			print('--- 1 --- :', request.form['site'], request.form['fieldusages'])
+			status = add_site_data(request.form['site'], request.form['fieldusages'])
+			print('--- 2 ---')
 			if status == 'GREEN':
+				tree = ET.ElementTree(root)
+				tree.write('database.xml')
+				tree.write('database_backup.xml')
 				print(minidom.parse('database.xml').toprettyxml())
 				return redirect(url_for('home'))
 			else:	errMsg = 'problems parsing data. did you follow all the instructions closely?'
 		else:	errMsg = 'your user does not seem to exist. click "add user" to add yourself!'
 	else: errMsg = 'did you enter values for each field?'
-	return redirect(url_for('submit', inputError = True, errMsg = errMsg))
+	return render_template('submit.html', inputError = True, errMsg = errMsg)
 	
-@app.route("/contact")
+@app.route("/contact-us")
 def contact():
 	return "Karan"
 
@@ -47,7 +59,8 @@ def update_site_data(site, fields, uses):
 def validate_user(username):
 	# check db and validate
 	# returns boolean
-	#
+	# TODO: VALIDATE THE USER FOR REAL !!!
+	return True
 		
 ##############################
 # 	  	  DATA  BASE	 	 #
@@ -64,7 +77,6 @@ def initializeDataObjects():
 		print('database.xml file could not be found. Creating new file in current dir.')
 		root = ET.Element('data')
 		elem_sites, elem_fields, elem_usages, elem_users = ET.SubElement(root, 'sites'), ET.SubElement(root, 'fields'), ET.SubElement(root, 'usages'), ET.SubElement(root, 'users')
-#		ET.SubElement(elem_trips, 'count').text = '0'
 
 # def addField(fieldToAdd): # done, untested
 # 	for field in elem_fields.findall('field'):
@@ -96,11 +108,11 @@ def getFieldForSite(fieldName, site):	# done, untested
 def getUsageForField(usageName, field):	# done, untested
 	for usage in field.findall('usage'):
 		if usage.text == usageName:
-			usage.attrib['count'] += 1
+			usage.attrib['count'] = str(int(usage.attrib['count']) + 1)
 			return usage
 	# Program flow reached here so no usage found
 	# Create usage
-	newUsage = ET.SubElement(field, 'usage', {'count':1})
+	newUsage = ET.SubElement(field, 'usage', {'count':'1'})
 	newUsage.text = usageName
 	return newUsage
 
