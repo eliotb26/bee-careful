@@ -39,7 +39,7 @@ def submit():
 	
 @app.route("/contact-us")
 def contact():
-	return "Karan"
+	return render_template('Context_us.html')
 
 @app.route("/profile")
 def profile():
