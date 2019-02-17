@@ -65,74 +65,99 @@ def initializeDataObjects():
 		elem_sites, elem_fields, elem_usages, elem_users = ET.SubElement(root, 'sites'), ET.SubElement(root, 'fields'), ET.SubElement(root, 'usages'), ET.SubElement(root, 'users')
 #		ET.SubElement(elem_trips, 'count').text = '0'
 
-def addField(fieldToAdd): # done, untested
-	for field in elem_fields.findall('field'):
-		if field.text == fieldToAdd:
-			return True
-	newField = ET.SubElement(elem_fields, 'field')
-	newField.text = fieldToAdd
-	return True
+# def addField(fieldToAdd): # done, untested
+# 	for field in elem_fields.findall('field'):
+# 		if field.text == fieldToAdd:
+# 			return True
+# 	newField = ET.SubElement(elem_fields, 'field')
+# 	newField.text = fieldToAdd
+# 	return True
+#
+#
+# def addUsage(usageToAdd): # done, untested
+# 	for usage in elem_usages.findall('usage'):
+# 		if usage.text == usageToAdd:
+# 			return True
+# 	newUsage = ET.SubElement(elem_usages, 'usage')
+# 	newUsage.text = usageToAdd
+# 	return True
 
-
-def addUsage(usageToAdd): # done, untested
-	for usage in elem_usages.findall('usage'):
-		if usage.text == usageToAdd:
-			return True
-	newUsage = ET.SubElement(elem_usages, 'usage')
-	newUsage.text = usageToAdd
-	return True
-
-def getFieldForSite(fieldName, siteAddr):
-	site = elem_sites.find()
-
-
-def getField(fieldName):	# done, untested
-	for field in elem_fields.findall('field'):
-		if field.text == fieldName:
+def getFieldForSite(fieldName, site):	# done, untested
+	# site = elem_sites.find('site', {'addr':siteAddr})
+	for field in site.findall('field'):
+		if field.attrib['name'] == fieldName:
 			return field
 	# Program flow reached here so no field found
 	# Create field
-	newField = ET.SubElement(elem_fields, 'field')
-	newField.text = fieldName
+	newField = ET.SubElement(site, 'field', {'name':fieldName})
 	return newField
 
-def getUsage(usageName):	# done, untested
-	for usage in elem_usages.findall('usage'):
+def getUsageForField(usageName, field):	# done, untested
+	for usage in field.findall('usage'):
 		if usage.text == usageName:
+			usage.attrib['count'] += 1
 			return usage
 	# Program flow reached here so no usage found
 	# Create usage
-	newUsage = ET.SubElement(elem_usages, 'usage')
+	newUsage = ET.SubElement(field, 'usage', {'count':1})
 	newUsage.text = usageName
 	return newUsage
 
 
+# def getField(fieldName):	# done, untested
+# 	for field in elem_fields.findall('field'):
+# 		if field.text == fieldName:
+# 			return field
+# 	# Program flow reached here so no field found
+# 	# Create field
+# 	newField = ET.SubElement(elem_fields, 'field')
+# 	newField.text = fieldName
+# 	return newField
+#
+# def getUsage(usageName):	# done, untested
+# 	for usage in elem_usages.findall('usage'):
+# 		if usage.text == usageName:
+# 			return usage
+# 	# Program flow reached here so no usage found
+# 	# Create usage
+# 	newUsage = ET.SubElement(elem_usages, 'usage')
+# 	newUsage.text = usageName
+# 	return newUsage
+
+
 def add_site_data(addr, field_usage):
-	field_usage_pairs = [value.strip() for value in field_usage.split(';')]
-	# get site
-	site = getSite(addr)
-	for pair in field_usage_pairs:
-		fieldName, usages = [value.strip() for value in pair.split(':')]
-		usages = [value.strip() for value in usages.split(',')]
-		# get field
-		field = getField(fieldName)
+	try:
+		field_usage_pairs = [value.strip() for value in field_usage.split(';')]
+		# get site
+		site = getSite(addr)
+		for pair in field_usage_pairs:
+			fieldName, usages = [value.strip() for value in pair.split(':')]
+			usageNames = [value.strip() for value in usages.split(',')]
+			# get field
+			field = getFieldForSite(fieldName, site)
+			for usageName in usageNames:
+				# get usage
+				usage = getUsageForField(usageName, field)
+				# would have created it if didn't exist or updated it so I think we good
 
-		ET.SubElement(site, 'field')
-	fields = [value.strip() for value in fields.split(';')]
-	usages = [value.strip() for value in usages.split(';')]
-	# next, we add all the fields and usages
-	for field in fields:
-		addField(field)
-	for usage in usages:
-		addUsage(usage)
-	# next we add the fields and usages to the site
+		# 	ET.SubElement(site, 'field')
+		# fields = [value.strip() for value in fields.split(';')]
+		# usages = [value.strip() for value in usages.split(';')]
+		# # next, we add all the fields and usages
+		# for field in fields:
+		# 	addField(field)
+		# for usage in usages:
+		# 	addUsage(usage)
+		# next we add the fields and usages to the site
 
-	# TODO: validate input contains no xml-banned characters?
-	# parse fields and uses
-	# then store in db for address
-	# catches exception which returns submit with error=True
-	# otherwise returns void
-	pass
+		# TODO: validate input contains no xml-banned characters?
+		# parse fields and uses
+		# then store in db for address
+		# catches exception which returns submit with error=True
+		# otherwise returns void
+		return True
+	except Exception as e:
+		return False
 	
 def addUser(username):
 	newUser = ET.SubElement(elem_users, 'user')
