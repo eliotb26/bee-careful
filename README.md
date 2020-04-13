@@ -1,4 +1,4 @@
-![BeeCareful](https://imgur.com/a/VYjHt3A)
+![BeeCareful](https://imgur.com/a/VYjHt3A) @ https://eliotb26.github.io/bee-careful/
 
 ## Inspiration
 
